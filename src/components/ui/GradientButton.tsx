@@ -1,8 +1,9 @@
 "use client";
 
 import React from "react";
-import { blurTokens, BlurLevel } from "@/tokens/blur";
+import { getBlurStyle, type BlurLevel } from "@/tokens/blur";
 import { colorPresets, ColorPresetKey } from "@/tokens/colors";
+import { buttonBaseStyles, buttonSizes, type ButtonSize } from "./buttonStyles";
 
 export interface GradientButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -26,7 +27,7 @@ export interface GradientButtonProps
   /**
    * ボタンサイズ
    */
-  size?: "sm" | "md" | "lg";
+  size?: ButtonSize;
   /**
    * 中心部の透明度 (0〜1)。デフォルトは 0.08
    */
@@ -36,12 +37,6 @@ export interface GradientButtonProps
    */
   edgeOpacity?: number;
 }
-
-const sizeStyles = {
-  sm: "px-6 py-2 text-sm tracking-wider font-semibold",
-  md: "px-10 py-4 text-lg tracking-wider font-semibold",
-  lg: "px-14 py-5 text-2xl tracking-widest font-bold",
-};
 
 export const GradientButton = React.forwardRef<
   HTMLButtonElement,
@@ -66,7 +61,6 @@ export const GradientButton = React.forwardRef<
   ) => {
     const preset = colorPresets[variant] ?? colorPresets.sky;
     const rgb = customRgb || preset.rgb;
-    const blurValue = blurTokens[blurLevel] ?? blurTokens[4];
     const finalTextColor = textColor || preset.text;
 
     // 中心へ向かって色の濃度が下がる放射グラデーション
@@ -79,23 +73,19 @@ export const GradientButton = React.forwardRef<
         ref={ref}
         disabled={disabled}
         style={{
+          ...getBlurStyle(blurLevel),
           background: backgroundGradient,
-          backdropFilter: `blur(${blurValue})`,
-          WebkitBackdropFilter: `blur(${blurValue})`,
           color: finalTextColor,
           ...style,
         }}
         className={`
-          relative inline-flex items-center justify-center
-          rounded-full select-none
-          transition-all duration-300 ease-out
+          ${buttonBaseStyles}
           border border-white/20
           shadow-[0_8px_32px_0_rgba(0,0,0,0.12)]
           hover:shadow-[0_12px_40px_0_rgba(${rgb},0.35)]
           hover:scale-[1.03] active:scale-[0.98]
-          focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2
-          disabled:opacity-50 disabled:pointer-events-none disabled:transform-none
-          ${sizeStyles[size]}
+          hover:scale-[1.03] active:scale-[0.98]
+          ${buttonSizes[size]}
           ${className}
         `}
         {...props}

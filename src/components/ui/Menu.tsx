@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { blurTokens, BlurLevel } from "@/tokens/blur";
+import { getBlurStyle, type BlurLevel } from "@/tokens/blur";
 
 export interface MenuProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
@@ -30,8 +30,6 @@ export const Menu = React.forwardRef<HTMLDivElement, MenuProps>(
     },
     ref
   ) => {
-    const blurValue = blurTokens[blurLevel] ?? blurTokens[4];
-
     // モードに応じたスタイリング
     const modeClass =
       mode === "dark"
@@ -45,8 +43,7 @@ export const Menu = React.forwardRef<HTMLDivElement, MenuProps>(
       <div
         ref={ref}
         style={{
-          backdropFilter: `blur(${blurValue})`,
-          WebkitBackdropFilter: `blur(${blurValue})`,
+          ...getBlurStyle(blurLevel),
           ...style,
         }}
         className={`
@@ -128,7 +125,7 @@ export const MenuItem = React.forwardRef<HTMLButtonElement, MenuItemProps>(
           ${
             danger
               ? "text-rose-500 hover:text-rose-400 hover:bg-rose-500/10"
-              : "inherit"
+              : ""
           }
           ${className}
         `}

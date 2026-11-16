@@ -12,15 +12,17 @@ DeVa Design System のための技術仕様・ドキュメント用Webサイト�
 │       ├── icons/        # SVGアイコン等
 │       └── images/       # 各種画像
 ├── src/
-│   ├── app/              # Next.js App Router ルーティング
-│   ├── components/       # UIコンポーネント
-│   │   ├── docs/         # ドキュメント表示用コンポーネント
-│   │   └── ui/           # デザインシステム共通UI
+│   ├── app/              # App Router のルート、レイアウト、グローバルCSS
+│   ├── components/
+│   │   ├── docs/         # サイトシェル、ホーム、コンポーネント仕様画面
+│   │   └── ui/           # 再利用可能なデザインシステムUI
 │   ├── content/
-│   │   └── specs/        # 技術仕様・ドキュメントコンテンツ (MDX / Markdown等)
+│   │   └── specs/        # 仕様プレビュー用のデータ
 │   ├── styles/           # グローバルスタイル・デザイントークン連携
 │   └── tokens/           # デザイントークン定義 (Colors, Spacing, Typography等)
 ```
+
+各仕様画面は `src/components/docs/` に分割し、プレビューの状態は各画面の中で管理します。共通ナビゲーションとサイト枠は `DesignSystemApp.tsx`、ナビゲーション項目とその型は `navigation.ts` にまとめています。共有UIの見た目は `src/components/ui/`、背景などのプレビュー選択肢は `src/content/specs/` で管理します。
 
 ## 開発サーバーの起動
 

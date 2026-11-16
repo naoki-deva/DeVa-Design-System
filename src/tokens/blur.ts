@@ -11,3 +11,12 @@ export const blurTokens = {
 } as const;
 
 export type BlurLevel = keyof typeof blurTokens;
+
+export function getBlurStyle(level: BlurLevel) {
+  const blur = blurTokens[level] ?? blurTokens[4];
+
+  return {
+    backdropFilter: `blur(${blur})`,
+    WebkitBackdropFilter: `blur(${blur})`,
+  };
+}

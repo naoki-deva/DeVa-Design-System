@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { blurTokens, BlurLevel } from "@/tokens/blur";
+import { getBlurStyle, type BlurLevel } from "@/tokens/blur";
 
 export interface OverlaySidebarProps extends React.HTMLAttributes<HTMLElement> {
   open: boolean;
@@ -21,8 +21,6 @@ export function OverlaySidebar({
   className = "",
   ...props
 }: OverlaySidebarProps) {
-  const blur = blurTokens[blurLevel] ?? blurTokens[4];
-
   React.useEffect(() => {
     if (!open) return;
     const onKeyDown = (event: KeyboardEvent) => {
@@ -46,8 +44,7 @@ export function OverlaySidebar({
         aria-hidden={!open}
         inert={!open}
         style={{
-          backdropFilter: `blur(${blur})`,
-          WebkitBackdropFilter: `blur(${blur})`,
+          ...getBlurStyle(blurLevel),
           transformOrigin: "left center",
         }}
         className={`fixed inset-y-4 left-4 z-[61] flex w-[min(20rem,calc(100vw-2rem))] flex-col overflow-y-auto rounded-[2rem] border border-white/20 bg-neutral-900/75 p-5 text-white shadow-[0_24px_80px_rgba(0,0,0,0.55)] origin-left transition-[transform,opacity] duration-[420ms] ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${open ? "translate-x-0 scale-x-100 opacity-100" : "pointer-events-none -translate-x-[105%] scale-x-[0.94] opacity-0"} ${className}`}

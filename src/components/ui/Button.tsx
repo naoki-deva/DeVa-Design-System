@@ -1,7 +1,8 @@
 "use client";
 
 import React from "react";
-import { blurTokens, BlurLevel } from "@/tokens/blur";
+import { getBlurStyle, type BlurLevel } from "@/tokens/blur";
+import { buttonBaseStyles, buttonSizes, type ButtonSize } from "./buttonStyles";
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -22,18 +23,12 @@ export interface ButtonProps
   /**
    * ボタンサイズ
    */
-  size?: "sm" | "md" | "lg";
+  size?: ButtonSize;
   /**
    * テキストカラーの上書き
    */
   textColor?: string;
 }
-
-const sizeStyles = {
-  sm: "px-6 py-2 text-sm tracking-wider font-semibold",
-  md: "px-10 py-4 text-lg tracking-wider font-semibold",
-  lg: "px-14 py-5 text-2xl tracking-widest font-bold",
-};
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
@@ -51,7 +46,6 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref
   ) => {
-    const blurValue = blurTokens[blurLevel] ?? blurTokens[4];
     const isBordered = bordered || variant === "bordered";
 
     return (
@@ -59,19 +53,14 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         disabled={disabled}
         style={{
-          backdropFilter: `blur(${blurValue})`,
-          WebkitBackdropFilter: `blur(${blurValue})`,
+          ...getBlurStyle(blurLevel),
           ...(textColor ? { color: textColor } : {}),
           ...style,
         }}
         className={`
-          relative inline-flex items-center justify-center
-          rounded-full select-none
-          transition-all duration-300 ease-out
+          ${buttonBaseStyles}
           hover:scale-[1.02] active:scale-[0.98]
-          focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2
-          disabled:opacity-50 disabled:pointer-events-none disabled:transform-none
-          ${sizeStyles[size]}
+          ${buttonSizes[size]}
           ${
             isBordered
               ? /* 白など単調な背景用の枠線表示スタイル */
